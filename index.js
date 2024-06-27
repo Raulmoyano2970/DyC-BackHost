@@ -17,11 +17,10 @@ mongoose
     console.log('MongoDb is connected');
   })
   .catch((err) => {
-    console.log(err);
+    console.error('MongoDb connection error:', err);
   });
 
 const __dirname = path.resolve();
-
 const app = express();
 
 app.use(express.json());
@@ -37,12 +36,29 @@ app.use('/api/post', postRoutes);
 app.use('/api/comment', commentRoutes);
 app.use('/api/comment2', comment2Routes);
 
-app.use(express.static(path.join(__dirname, 'client', 'dist')));
+app.use(express.static(path.join(__dirname, '/client/dist')));
 
+// Manejo de la ruta "/"
+app.get("/", (req, res) => {
+  const htmlResponse = `
+    <html>
+      <head>
+        <title>NodeJs y Express en Vercel</title>
+      </head>
+      <body>
+        <h1>Soy un proyecto Back end en vercel</h1>
+      </body>
+    </html>
+  `;
+  res.send(htmlResponse);
+});
+
+// Ruta para servir el archivo index.html desde la carpeta client/dist para todas las demás rutas
 app.get('*', (req, res) => {
   res.sendFile(path.join(__dirname, 'client', 'dist', 'index.html'));
 });
 
+// Middleware para manejar errores
 app.use((err, req, res, next) => {
   const statusCode = err.statusCode || 500;
   const message = err.message || 'Internal Server Error';
