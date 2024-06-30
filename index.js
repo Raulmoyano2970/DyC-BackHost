@@ -26,7 +26,7 @@ const app = express();
 
 // Configuración de CORS
 app.use(cors({
-  origin: 'https://clinicadyc.vercel.app/', // Reemplaza con el dominio de tu frontend
+  origin: 'https://clinicadyc.vercel.app', // Reemplaza con el dominio de tu frontend
   methods: 'GET,POST,PUT,DELETE,OPTIONS',
   allowedHeaders: 'Content-Type, Authorization',
 }));
