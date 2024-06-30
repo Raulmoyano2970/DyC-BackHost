@@ -1,6 +1,7 @@
 import express from 'express';
 import mongoose from 'mongoose';
 import dotenv from 'dotenv';
+import cors from 'cors';
 import userRoutes from './routes/user.route.js';
 import authRoutes from './routes/auth.route.js';
 import postRoutes from './routes/post.route.js';
@@ -23,6 +24,13 @@ mongoose
 const __dirname = path.resolve();
 const app = express();
 
+// Configuración de CORS
+app.use(cors({
+  origin: 'https://clinicadyc.vercel.app/', // Reemplaza con el dominio de tu frontend
+  methods: 'GET,POST,PUT,DELETE,OPTIONS',
+  allowedHeaders: 'Content-Type, Authorization',
+}));
+
 app.use(express.json());
 app.use(cookieParser());
 
@@ -37,8 +45,6 @@ app.use('/api/comment', commentRoutes);
 app.use('/api/comment2', comment2Routes);
 
 app.use(express.static(path.join(__dirname, '/client/dist')));
-
-
 
 // Ruta para servir el archivo index.html desde la carpeta client/dist para todas las demás rutas
 app.get('*', (req, res) => {
